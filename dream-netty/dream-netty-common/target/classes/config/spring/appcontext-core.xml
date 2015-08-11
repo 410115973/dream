@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:amq="http://activemq.apache.org/schema/core" xmlns:avatar="http://www.dianping.com/schema/avatar"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+	http://www.dianping.com/schema/avatar http://www.dianping.com/schema/avatar/avatar-1.0.xsd">
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config/settings.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="springLocator" class="com.dream.netty.common.utils.SpringLocator"></bean>
+
+	<context:component-scan base-package="com.dream.*" />
+	<context:annotation-config />
+
+	<bean id="serverHandler" class="com.dream.netty.common.channel.ServerHandler" init-method="init">
+	</bean>
+	<bean id="handlerDispatcher" class="com.dream.netty.common.handler.HandlerDispatcher" init-method="init" destroy-method="stop">
+		<property name="messageExecutor">
+			<bean class="com.dream.netty.common.domain.FiexThreadPoolExecutor" destroy-method="shutdown">
+				<constructor-arg value="${app.dispatcher.pool.corePoolSize}" />
+				<constructor-arg value="${app.dispatcher.pool.maximumPoolSize}" />
+				<constructor-arg value="${app.dispatcher.pool.keepAliveSecond}" />
+			</bean>
+		</property>
+		<property name="sleepTime" value="${app.dispatcher.sleepTime}" />
+	</bean>
+
+	<!-- <bean id="placeholder" class="com.dianping.lion.client.SpringConfig"> <property name="propertiesPath" value="config/applicationContext.properties" /> </bean> -->
+</beans>
