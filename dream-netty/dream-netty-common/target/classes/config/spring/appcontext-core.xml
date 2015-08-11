@@ -21,7 +21,7 @@
 	<context:component-scan base-package="com.dream.*" />
 	<context:annotation-config />
 
-	<bean id="serverHandler" class="com.dream.netty.common.channel.ServerHandler" init-method="init">
+	<bean id="serverHandler" class="com.dream.netty.common.channel.JsonChannelInboundHandler" init-method="init">
 	</bean>
 	<bean id="handlerDispatcher" class="com.dream.netty.common.handler.HandlerDispatcher" init-method="init" destroy-method="stop">
 		<property name="messageExecutor">

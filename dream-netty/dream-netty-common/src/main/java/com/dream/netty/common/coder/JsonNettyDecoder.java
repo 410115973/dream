@@ -1,11 +1,11 @@
 package com.dream.netty.common.coder;
 
-import java.nio.ByteBuffer;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.frame.LengthFieldBasedFrameDecoder;
+import java.nio.ByteBuffer;
 
 import com.dream.netty.common.constants.NettyConstants;
 
@@ -24,8 +24,8 @@ public class JsonNettyDecoder extends LengthFieldBasedFrameDecoder {
 	}
 
 	@Override
-	protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
-		ChannelBuffer bufferMessage = (ChannelBuffer) super.decode(ctx, channel, buffer);
+	protected Object decode(ChannelHandlerContext ctx, ByteBuf buffer) throws Exception {
+		ByteBuf bufferMessage = (ByteBuf) super.decode(ctx, buffer);
 		if (null != bufferMessage) {
 			bufferMessage.skipBytes(4);// 越过dataLength的字节
 			ByteBuffer byteBuffer = ByteBuffer.allocate(bufferMessage.readableBytes());

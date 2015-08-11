@@ -1,12 +1,8 @@
 package com.dream.netty.common.coder;
 
-import java.nio.charset.Charset;
-
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.frame.LengthFieldPrepender;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.LengthFieldPrepender;
 
 import com.dream.netty.common.constants.NettyConstants;
 
@@ -20,15 +16,14 @@ public class JsonNettyEncoder extends LengthFieldPrepender {
 	}
 
 	@Override
-	protected Object encode(ChannelHandlerContext cxt, Channel channel, Object msg) throws Exception {
-		ChannelBuffer buffer = ChannelBuffers.dynamicBuffer(channel.getConfig().getBufferFactory());
-		if (null != msg) {
+	protected void encode(ChannelHandlerContext cxt, ByteBuf msg, ByteBuf out) throws Exception {
+		super.encode(cxt, msg, out);
+		if (null != out) {
 			String msgStr = msg.toString();
 			byte[] bytes = msgStr.getBytes(NettyConstants.CHARSET);
-			buffer.writeInt(bytes.length);
-			buffer.writeBytes(bytes);
+			out.writeInt(bytes.length);
+			out.writeBytes(bytes);
 		}
-		return buffer;
 
 	}
 }

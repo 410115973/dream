@@ -1,5 +1,7 @@
 package com.dream.netty.common.handler;
 
+import io.netty.channel.Channel;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,7 +9,6 @@ import java.util.concurrent.Executor;
 
 import javax.annotation.Resource;
 
-import org.jboss.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ import com.dream.netty.common.domain.NettyResponse;
  */
 public class HandlerDispatcher implements Runnable {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger LOGGER = LoggerFactory.getLogger(getClass());
 	private Executor messageExecutor;
 	private Map<Integer, MessageQueue> sessionMsgQ;
 
@@ -62,7 +63,7 @@ public class HandlerDispatcher implements Runnable {
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {
-				logger.error("", e);
+				LOGGER.error("", e);
 			}
 		}
 	}
@@ -80,11 +81,11 @@ public class HandlerDispatcher implements Runnable {
 	 */
 	public boolean addMessage(INettyRequest request) {
 		boolean added = false;
-		int channelId = request.channel().getId();
+		int channelId = request.channel().hashCode();
 		MessageQueue messageQueue = sessionMsgQ.get(channelId);
 		if (messageQueue == null) {
 			request.channel().close();
-			logger.error("", new IllegalStateException());
+			LOGGER.error("", new IllegalStateException());
 		} else {
 			added = messageQueue.add(request);
 		}
@@ -98,7 +99,7 @@ public class HandlerDispatcher implements Runnable {
 	/**
 	 * @param session
 	 */
-	public void removeMessageQueue(String key) {
+	public void removeMessageQueue(Integer key) {
 		MessageQueue queue = sessionMsgQ.remove(key);
 		if (queue != null) {
 			queue.clear();
@@ -143,7 +144,7 @@ public class HandlerDispatcher implements Runnable {
 				response.setData(responseData);
 				channel.write(nettyMessageHandler.handlerToMsg(response));
 			} else {
-
+				LOGGER.error("not find handler:{}", request);
 			}
 		}
 	}
