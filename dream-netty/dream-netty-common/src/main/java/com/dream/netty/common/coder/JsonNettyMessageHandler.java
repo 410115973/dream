@@ -6,9 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.dream.netty.common.domain.INettyRequest;
-import com.dream.netty.common.domain.INettyResponse;
-import com.dream.netty.common.domain.JsonNettyRequest;
 import com.dream.netty.common.utils.JsonUtils;
 
 @Component
@@ -16,11 +13,11 @@ public class JsonNettyMessageHandler implements INettyMessageHandler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(JsonNettyMessageHandler.class);
 
 	@Override
-	public INettyRequest handlerForMsg(Object msg) {
+	public <T> T handlerForMsg(Object msg, Class<T> targetClass) {
 		if (msg instanceof String) {
 			try {
-				JsonNettyRequest nettyRequest = JsonUtils.fromStr((String) msg, JsonNettyRequest.class);
-				return nettyRequest;
+				T targetObject = JsonUtils.fromStr((String) msg, targetClass);
+				return targetObject;
 			} catch (IOException e) {
 				LOGGER.warn(e.getMessage(), e);
 			}
@@ -29,9 +26,9 @@ public class JsonNettyMessageHandler implements INettyMessageHandler {
 	}
 
 	@Override
-	public Object handlerToMsg(INettyResponse response) {
+	public <T> Object handlerToMsg(T sourceObject) {
 		try {
-			return JsonUtils.toStr(response);
+			return JsonUtils.toStr(sourceObject);
 		} catch (Exception e) {
 			LOGGER.warn(e.getMessage(), e);
 		}

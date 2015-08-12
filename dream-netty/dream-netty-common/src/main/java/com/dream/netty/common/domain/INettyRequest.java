@@ -28,6 +28,10 @@ public interface INettyRequest {
 
 	void setData(Object data);
 
+	void setBaseRequestHeader(BaseRequestHeader baseRequestHeader);
+
+	void setCommandHeader(CommandHeader commandHeader);
+
 	<T extends INettyData> T dataConverter(Class<T> targetClass);
 
 }

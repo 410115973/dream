@@ -8,32 +8,50 @@ import java.util.Map;
  * @author mobangwei
  *
  */
-public interface BaseRequestHeader {
-	/**
-	 * 协议类型
-	 * 
-	 * @return
-	 */
-	String protocolType();
-
+public class BaseRequestHeader {
 	/**
 	 * 版本号
 	 * 
 	 * @return
 	 */
-	String version();
+	private String version;
 
 	/**
 	 * 加密类型
 	 * 
 	 * @return
 	 */
-	String encryptType();
+	private String encryptType;
 
 	/**
 	 * 协议包含的多个自定义类型
 	 * 
 	 * @return
 	 */
-	Map<String, Object> extra();
+	private Map<String, Object> extra;
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getEncryptType() {
+		return encryptType;
+	}
+
+	public void setEncryptType(String encryptType) {
+		this.encryptType = encryptType;
+	}
+
+	public Map<String, Object> getExtra() {
+		return extra;
+	}
+
+	public void setExtra(Map<String, Object> extra) {
+		this.extra = extra;
+	}
+
 }

@@ -16,7 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.util.Log4jConfigurer;
 
-import com.dream.netty.common.channel.UdpPipelineFactory;
+import com.dream.netty.common.channel.UdpServerChannelInitializer;
 
 /**
  * 启动,使用udp协议
@@ -47,12 +47,10 @@ public class ServerStart {
 	private static void serverStart(String host, Integer port) {
 		try {
 			ApplicationContext factory = new FileSystemXmlApplicationContext(new String[] { "classpath:config/spring/appcontext-*.xml" });
-			
-			ServerBootstrap bootstrap = new ServerBootstrap()
-			.group(bossGroup, workerGroup)
-			.channel(NioServerSocketChannel.class)
-			.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(1048576)).option(ChannelOption.TCP_NODELAY, true)
-			.childHandler((UdpPipelineFactory)factory.getBean("udpPipelineFactory",UdpPipelineFactory.class));
+
+			ServerBootstrap bootstrap = new ServerBootstrap().group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+					.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(1048576)).option(ChannelOption.TCP_NODELAY, true)
+					.childHandler(new UdpServerChannelInitializer());
 			bootstrap.bind(new InetSocketAddress(host, port));
 			LOGGER.info("server host:{} port:{} is started", host, port);
 		} catch (Exception e) {

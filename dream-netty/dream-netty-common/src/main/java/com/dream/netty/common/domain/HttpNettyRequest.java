@@ -37,6 +37,7 @@ public class HttpNettyRequest implements INettyRequest, Serializable {
 		return channel;
 	}
 
+	@Override
 	public void setCommandHeader(CommandHeader commandheader) {
 		this.commandheader = commandheader;
 	}
@@ -106,6 +107,7 @@ public class HttpNettyRequest implements INettyRequest, Serializable {
 		return baseRequestHeader;
 	}
 
+	@Override
 	public void setBaseRequestHeader(BaseRequestHeader baseRequestHeader) {
 		this.baseRequestHeader = baseRequestHeader;
 	}

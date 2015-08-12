@@ -21,7 +21,7 @@
 		<level value="ERROR" />
 	</logger>
 	<logger name="com">
-		<level value="warn" />
+		<level value="INFO" />
 	</logger>
 	<logger name="org.apache">
 		<level value="ERROR" />
@@ -33,6 +33,7 @@
 		<level value="ERROR" />
 	</logger>
 	<root>
+		<level value="WARN" />
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
 	</root>

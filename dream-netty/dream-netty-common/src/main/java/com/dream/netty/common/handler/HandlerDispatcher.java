@@ -34,7 +34,6 @@ public class HandlerDispatcher implements Runnable {
 	@Resource
 	private IRequestMappingHandler requestMappingHandler;
 
-	@Resource
 	private INettyMessageHandler nettyMessageHandler;
 	private boolean running = false;
 	private long sleepTime = 200;
@@ -140,9 +139,10 @@ public class HandlerDispatcher implements Runnable {
 			if (handler != null) {
 				INettyData responseData = handler.execute(request);
 				// 封装response对象
-				NettyResponse response = new NettyResponse(header);
+				NettyResponse response = new NettyResponse();
+				response.setCommandHeader(header);
 				response.setData(responseData);
-				channel.write(nettyMessageHandler.handlerToMsg(response));
+				channel.writeAndFlush(response);
 			} else {
 				LOGGER.error("not find handler:{}", request);
 			}
@@ -155,5 +155,9 @@ public class HandlerDispatcher implements Runnable {
 
 	public void setSleepTime(long sleepTime) {
 		this.sleepTime = sleepTime;
+	}
+
+	public void setNettyMessageHandler(INettyMessageHandler nettyMessageHandler) {
+		this.nettyMessageHandler = nettyMessageHandler;
 	}
 }
