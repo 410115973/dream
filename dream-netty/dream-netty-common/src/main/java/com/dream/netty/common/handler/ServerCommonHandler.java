@@ -12,21 +12,31 @@ import com.dream.netty.common.domain.INettyData;
 import com.dream.netty.common.domain.INettyRequest;
 
 /**
- * 作者:chenpeng E-mail:46731706@qq.com 创建时间：2012-7-12 下午12:10:33 类说明
+ * 基础类型，所有的handler都继承该类型做返回
+ * 
+ * @author mobangwei
+ *
+ * @param <Request>
+ * @param <Response>
  */
 public abstract class ServerCommonHandler<Request extends INettyData, Response extends INettyData> implements INettyHandler<Request, Response> {
 	public Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	public abstract Response execute(Request request, Map<String, Object> model) throws NettyRunTimeException;
 
+	public void prepare(INettyContext nettyContext) throws NettyRunTimeException {
+
+	}
+
 	@Override
 	public Response execute(INettyContext context) throws NettyRunTimeException {
+		prepare(context);
 		INettyRequest request = context.getRequest();
-		return execute(request.dataConverter(getGenericType()), context.getExtras());
+		return execute(request.dataConverter(getRequestGenericType()), context.getExtras());
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Class<Request> getGenericType() {
+	protected Class<Request> getRequestGenericType() {
 		Type t = this.getClass().getGenericSuperclass();
 		if (t instanceof ParameterizedType) {
 			Type[] p = ((ParameterizedType) t).getActualTypeArguments();
