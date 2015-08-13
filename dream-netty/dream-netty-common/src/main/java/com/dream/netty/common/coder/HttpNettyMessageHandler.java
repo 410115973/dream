@@ -9,12 +9,9 @@ import io.netty.handler.codec.http.QueryStringDecoder;
 import java.util.List;
 import java.util.Map;
 
-import javax.crypto.KeyGenerator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dream.netty.common.domain.BaseRequestHeader;
 import com.dream.netty.common.domain.CommandHeader;
 import com.dream.netty.common.domain.INettyRequest;
 
@@ -41,11 +38,6 @@ public class HttpNettyMessageHandler implements INettyMessageHandler {
 					header.setCommandType(Integer.parseInt(headers.get("commandType")));
 					nettyRequest.setCommandHeader(header);
 					nettyRequest.setData(params);
-					BaseRequestHeader baseRequestHeader = new BaseRequestHeader();
-					baseRequestHeader.setEncryptType(headers.get("encryptType"));
-					baseRequestHeader.setVersion(request.getProtocolVersion().protocolName());
-					// KeyGenerator.getInstance(arg0)
-					nettyRequest.setBaseRequestHeader(baseRequestHeader);
 					nettyRequest.setData(decoder);
 					return (T) nettyRequest;
 				}

@@ -31,8 +31,6 @@ public class HttpNettyRequest implements INettyRequest, Serializable {
 
 	private Object data;
 
-	private BaseRequestHeader baseRequestHeader;
-
 	public Channel channel() {
 		return channel;
 	}
@@ -100,16 +98,6 @@ public class HttpNettyRequest implements INettyRequest, Serializable {
 			LOGGER.warn(e.getMessage(), e);
 		}
 		return null;
-	}
-
-	@Override
-	public BaseRequestHeader getBaseRequestHeader() {
-		return baseRequestHeader;
-	}
-
-	@Override
-	public void setBaseRequestHeader(BaseRequestHeader baseRequestHeader) {
-		this.baseRequestHeader = baseRequestHeader;
 	}
 
 }

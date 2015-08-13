@@ -12,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import com.dream.netty.common.utils.JsonUtils;
 
 /**
- * 作者:chenpeng E-mail:46731706@qq.com 创建时间：2012-7-12 上午11:36:31 类说明 游戏请求封装
+ * json的Request
+ * @author mobangwei
+ *
  */
 public class JsonNettyRequest implements INettyRequest, Serializable {
 	/**
@@ -27,8 +29,6 @@ public class JsonNettyRequest implements INettyRequest, Serializable {
 	private Channel channel;
 
 	private Object data;
-
-	private BaseRequestHeader baseRequestHeader;
 
 	public Channel channel() {
 		return channel;
@@ -75,16 +75,6 @@ public class JsonNettyRequest implements INettyRequest, Serializable {
 			LOGGER.warn(e.getMessage(), e);
 		}
 		return (T) data;
-	}
-
-	@Override
-	public BaseRequestHeader getBaseRequestHeader() {
-		return baseRequestHeader;
-	}
-
-	@Override
-	public void setBaseRequestHeader(BaseRequestHeader baseRequestHeader) {
-		this.baseRequestHeader = baseRequestHeader;
 	}
 
 }

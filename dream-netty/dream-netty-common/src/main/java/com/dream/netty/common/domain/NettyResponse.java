@@ -17,8 +17,6 @@ public class NettyResponse implements INettyResponse, Serializable {
 
 	private Object data;
 
-	private BaseRequestHeader baseRequestHeader;
-
 	public Channel channel() {
 		return channel;
 	}
@@ -51,15 +49,6 @@ public class NettyResponse implements INettyResponse, Serializable {
 	@Override
 	public void channel(Channel channel) {
 		this.channel = channel;
-	}
-
-	@Override
-	public BaseRequestHeader getBaseRequestHeader() {
-		return baseRequestHeader;
-	}
-
-	public void setBaseRequestHeader(BaseRequestHeader baseRequestHeader) {
-		this.baseRequestHeader = baseRequestHeader;
 	}
 
 }

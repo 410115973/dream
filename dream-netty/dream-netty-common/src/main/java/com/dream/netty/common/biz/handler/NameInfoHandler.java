@@ -15,5 +15,4 @@ public class NameInfoHandler extends ServerCommonHandler<NameInfoRequest, NameIn
 		response.setAge(10);
 		return response;
 	}
-
 }
