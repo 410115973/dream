@@ -74,7 +74,7 @@ public class JsonNettyRequest implements INettyRequest, Serializable {
 		} catch (IOException e) {
 			LOGGER.warn(e.getMessage(), e);
 		}
-		return null;
+		return (T) data;
 	}
 
 	@Override

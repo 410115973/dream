@@ -18,8 +18,10 @@ import org.springframework.util.Log4jConfigurer;
 
 import com.dream.netty.common.biz.handler.NameInfoRequest;
 import com.dream.netty.common.client.ClientChannelInitializer;
+import com.dream.netty.common.constants.NettyConstants;
 import com.dream.netty.common.domain.CommandHeader;
 import com.dream.netty.common.domain.JsonNettyRequest;
+import com.dream.netty.common.utils.EncryptUtils;
 import com.dream.netty.common.utils.JsonUtils;
 
 public class NettyClient {
@@ -47,8 +49,8 @@ public class NettyClient {
 			request.setCommandHeader(header);
 			NameInfoRequest a = new NameInfoRequest();
 			a.setName("莫邦伟");
-			request.setData(a);
-			c.pipeline().get("frameEncoder");
+			String data=EncryptUtils.encrypt(a, NettyConstants.ENCRIPT_KEY);
+			request.setData(data);
 			c.writeAndFlush(JsonUtils.toStr(request)).sync();
 
 		} catch (Exception e) {

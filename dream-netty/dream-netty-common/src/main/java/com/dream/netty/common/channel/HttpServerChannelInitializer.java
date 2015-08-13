@@ -15,7 +15,7 @@ import com.dream.netty.common.coder.HttpNettyEncoder;
 public class HttpServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
 	@Override
-	protected void initChannel(SocketChannel ch) throws Exception {
+	public void initChannel(SocketChannel ch) throws Exception {
 		ChannelPipeline pipeLine = ch.pipeline();
 		pipeLine.addLast("frameDecoder", new HttpRequestDecoder());
 		pipeLine.addLast("bizDecoder", new HttpNettyDecoder());

@@ -12,10 +12,9 @@ import com.dream.netty.common.coder.JsonNettyDecoder;
 import com.dream.netty.common.coder.JsonNettyEncoder;
 import com.dream.netty.common.coder.PluginLengthFieldBasedFrameDecoder;
 
-public class UdpServerChannelInitializer extends ChannelInitializer<SocketChannel> {
-
+public class TcpServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 	@Override
-	protected void initChannel(SocketChannel ch) throws Exception {
+	public void initChannel(SocketChannel ch) throws Exception {
 		ChannelPipeline pipeLine = ch.pipeline();
 		pipeLine.addLast("frameDecoder", new PluginLengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4));
 		pipeLine.addLast("decoder", new StringDecoder(CharsetUtil.UTF_8));

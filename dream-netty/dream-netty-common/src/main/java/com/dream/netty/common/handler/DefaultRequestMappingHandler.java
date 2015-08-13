@@ -12,6 +12,7 @@ import com.dream.netty.common.utils.SpringLocator;
  *
  */
 @Component
+@SuppressWarnings("rawtypes")
 public class DefaultRequestMappingHandler implements IRequestMappingHandler {
 
 	private static Map<String, INettyHandler> handlers = SpringLocator.getApplicationContext().getBeansOfType(INettyHandler.class);

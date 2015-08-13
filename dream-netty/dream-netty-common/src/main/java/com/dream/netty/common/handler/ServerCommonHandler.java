@@ -2,12 +2,12 @@ package com.dream.netty.common.handler;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dream.netty.common.domain.INettyContext;
 import com.dream.netty.common.domain.INettyData;
 import com.dream.netty.common.domain.INettyRequest;
 
@@ -20,9 +20,9 @@ public abstract class ServerCommonHandler<Request extends INettyData, Response e
 	public abstract Response execute(Request request, Map<String, Object> model) throws NettyRunTimeException;
 
 	@Override
-	public Response execute(INettyRequest request) throws NettyRunTimeException {
-		Map<String, Object> model = new HashMap<String, Object>();
-		return execute(request.dataConverter(getGenericType()), model);
+	public Response execute(INettyContext context) throws NettyRunTimeException {
+		INettyRequest request = context.getRequest();
+		return execute(request.dataConverter(getGenericType()), context.getExtras());
 	}
 
 	@SuppressWarnings("unchecked")

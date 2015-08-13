@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dream.netty.common.coder.INettyMessageHandler;
 import com.dream.netty.common.domain.CommandHeader;
 import com.dream.netty.common.domain.INettyData;
 import com.dream.netty.common.domain.INettyRequest;
@@ -34,7 +33,9 @@ public class HandlerDispatcher implements Runnable {
 	@Resource
 	private IRequestMappingHandler requestMappingHandler;
 
-	private INettyMessageHandler nettyMessageHandler;
+	@Resource(name = "contextBuilder")
+	private INettyContextBuilder contextBuilder;
+
 	private boolean running = false;
 	private long sleepTime = 200;
 
@@ -137,7 +138,7 @@ public class HandlerDispatcher implements Runnable {
 			Channel channel = request.channel();
 			INettyHandler handler = requestMappingHandler.getHandler(header.getMapping());
 			if (handler != null) {
-				INettyData responseData = handler.execute(request);
+				INettyData responseData = handler.execute(contextBuilder.build(request, null));
 				// 封装response对象
 				NettyResponse response = new NettyResponse();
 				response.setCommandHeader(header);
@@ -155,9 +156,5 @@ public class HandlerDispatcher implements Runnable {
 
 	public void setSleepTime(long sleepTime) {
 		this.sleepTime = sleepTime;
-	}
-
-	public void setNettyMessageHandler(INettyMessageHandler nettyMessageHandler) {
-		this.nettyMessageHandler = nettyMessageHandler;
 	}
 }

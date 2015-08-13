@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.dream.netty.common.domain.INettyRequest;
 import com.dream.netty.common.domain.MessageQueue;
 import com.dream.netty.common.handler.HandlerDispatcher;
+import com.dream.netty.common.utils.SpringLocator;
 
 /**
  * 
@@ -22,7 +23,7 @@ import com.dream.netty.common.handler.HandlerDispatcher;
 public class ChannelInboundHandler extends SimpleChannelInboundHandler<INettyRequest> {
 	public Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-	public HandlerDispatcher handlerDispatcher = new HandlerDispatcher();
+	public HandlerDispatcher handlerDispatcher = SpringLocator.getBean(HandlerDispatcher.class);
 
 	public void init() {
 		new Thread(handlerDispatcher).start();
