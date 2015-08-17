@@ -1,9 +1,5 @@
 package com.dream.netty.common.main;
 
-import io.netty.channel.ChannelConfig;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.DefaultChannelConfig;
-
 import java.io.FileNotFoundException;
 
 import org.slf4j.Logger;

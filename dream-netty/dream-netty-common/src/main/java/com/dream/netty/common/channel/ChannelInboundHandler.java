@@ -4,17 +4,16 @@ import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dream.netty.common.domain.INettyRequest;
-import com.dream.netty.common.domain.MessageQueue;
-import com.dream.netty.common.handler.HandlerDispatcher;
+import com.dream.netty.common.handler.dispatcher.ChannelGroupHolder;
+import com.dream.netty.common.handler.dispatcher.HandlerDispatcher;
 import com.dream.netty.common.utils.SpringLocator;
 
 /**
+ * 经过各种协议的拆包后生成一个INettyRequest抽象类，所有的请求最终到达后台的属性都是一致的
  * 
  * @author mobangwei
  *
@@ -22,10 +21,10 @@ import com.dream.netty.common.utils.SpringLocator;
 @Sharable
 public class ChannelInboundHandler extends SimpleChannelInboundHandler<INettyRequest> {
 	public Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private HandlerDispatcher handlerDispatcher;
 
-	public HandlerDispatcher handlerDispatcher = SpringLocator.getBean(HandlerDispatcher.class);
-
-	public void init() {
+	public ChannelInboundHandler() {
+		handlerDispatcher = SpringLocator.getBean(HandlerDispatcher.class);
 		new Thread(handlerDispatcher).start();
 	}
 
@@ -34,10 +33,8 @@ public class ChannelInboundHandler extends SimpleChannelInboundHandler<INettyReq
 	 */
 	@Override
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-		Integer channelId = ctx.channel().hashCode();
-		LOGGER.info("进来一个channel：{}", channelId);
-		MessageQueue messageQueue = new MessageQueue(new ConcurrentLinkedQueue<INettyRequest>());
-		handlerDispatcher.addMessageQueue(channelId, messageQueue);
+		handlerDispatcher.getChannelMessageHolder().registerChannel(ctx.channel());
+		ChannelGroupHolder.addChannel(ctx.channel());
 	}
 
 	/**
@@ -47,14 +44,16 @@ public class ChannelInboundHandler extends SimpleChannelInboundHandler<INettyReq
 	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
 		Integer channelId = ctx.channel().hashCode();
 		LOGGER.info("关闭一个channel：{}", channelId);
-		handlerDispatcher.removeMessageQueue(channelId);
+		handlerDispatcher.getChannelMessageHolder().removeChannel(ctx.channel());
+		ChannelGroupHolder.remove(ctx.channel());
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable e) throws Exception {
 		Integer channelId = ctx.channel().hashCode();
 		LOGGER.info("出异常啦……{}", channelId, e);
-		handlerDispatcher.removeMessageQueue(channelId);
+		handlerDispatcher.getChannelMessageHolder().removeChannel(ctx.channel());
+		ChannelGroupHolder.remove(ctx.channel());
 		ctx.channel().close();
 	}
 
@@ -62,7 +61,7 @@ public class ChannelInboundHandler extends SimpleChannelInboundHandler<INettyReq
 	protected void channelRead0(ChannelHandlerContext ctx, INettyRequest msg) throws Exception {
 		msg.channel(ctx.channel());
 		// 通知回调协议
-		handlerDispatcher.addMessage(msg);
+		handlerDispatcher.getChannelMessageHolder().addMessage(msg);
 	}
 
 	@Override

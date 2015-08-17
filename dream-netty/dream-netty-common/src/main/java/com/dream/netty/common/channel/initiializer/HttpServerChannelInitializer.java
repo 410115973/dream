@@ -1,4 +1,4 @@
-package com.dream.netty.common.channel;
+package com.dream.netty.common.channel.initiializer;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -9,11 +9,11 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 
+import com.dream.netty.common.channel.ChannelInboundHandler;
 import com.dream.netty.common.coder.HttpNettyDecoder;
 import com.dream.netty.common.coder.HttpNettyEncoder;
 
 public class HttpServerChannelInitializer extends ChannelInitializer<SocketChannel> {
-
 	@Override
 	public void initChannel(SocketChannel ch) throws Exception {
 		ChannelPipeline pipeLine = ch.pipeline();

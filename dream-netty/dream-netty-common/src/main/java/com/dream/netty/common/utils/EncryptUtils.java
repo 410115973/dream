@@ -17,9 +17,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
-import com.dream.netty.common.biz.handler.NameInfoRequest;
-
 import net.iharder.Base64;
+
+import com.dream.netty.common.biz.handler.NameInfoRequest;
+import com.dream.netty.common.biz.handler.NameInfoResponse;
 
 public class EncryptUtils {
 
@@ -170,7 +171,7 @@ public class EncryptUtils {
 		String key = "A1B2CED4EaF60708";
 		String encryptData = encrypt(source, key);
 		System.out.println("加密后: " + encryptData);
-		Object decryptData = decrypt(encryptData, key);
-		System.out.println("解密后: " + ((NameInfoRequest)decryptData).getName());
+		Object decryptData = decrypt("K3yO+29e4oBiHkdiTu1rFPyfHq+DPdEagt7a4mCMuqa8Df5InNbp93EINMLAVx+YqjTonYdpitmLuUpyzwMZ5BT/pQ4uLATO0vbiXTNb0/XUkYWyYzhbksZmq35AIWaWSY7um5bsHvqKUKnJRKzNBH/X8kTgRANS", key);
+		System.out.println("解密后: " + ((NameInfoResponse)decryptData).getAge());
 	}
 }

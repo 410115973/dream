@@ -1,5 +1,7 @@
 package com.dream.netty.common.domain;
 
+import java.io.Serializable;
+
 import io.netty.channel.Channel;
 
 /**
@@ -8,7 +10,7 @@ import io.netty.channel.Channel;
  * @author mobangwei
  *
  */
-public interface INettyRequest {
+public interface INettyRequest extends Serializable {
 	/**
 	 * 逻辑头
 	 * 

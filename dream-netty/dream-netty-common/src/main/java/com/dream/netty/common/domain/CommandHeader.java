@@ -18,7 +18,9 @@ public class CommandHeader implements Serializable {
 	 * 一次交互的唯一id
 	 */
 	private long id;
-
+	/**
+	 * 映射的key
+	 */
 	private String mapping;
 	/**
 	 * 协议请求时间戳

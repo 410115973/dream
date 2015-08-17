@@ -1,6 +1,6 @@
 package com.dream.netty.common.domain;
 
-import io.netty.channel.Channel;
+import java.io.Serializable;
 
 /**
  * 公用返回结果
@@ -8,7 +8,7 @@ import io.netty.channel.Channel;
  * @author mobangwei
  *
  */
-public interface INettyResponse {
+public interface INettyResponse extends Serializable {
 
 	/**
 	 * 逻辑头
@@ -17,12 +17,14 @@ public interface INettyResponse {
 	 */
 	CommandHeader getCommandHeader();
 
-	Channel channel();
-
-	void channel(Channel channel);
-
 	Object getData();
 
 	void setData(Object data);
+
+	void setCommandHeader(CommandHeader commandHeader);
+
+	String channelGroup();
+
+	void channelGroup(String channelGroup);
 
 }

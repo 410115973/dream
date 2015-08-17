@@ -7,6 +7,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.util.UUID;
 
@@ -20,6 +21,7 @@ import com.dream.netty.common.biz.handler.NameInfoRequest;
 import com.dream.netty.common.client.ClientChannelInitializer;
 import com.dream.netty.common.constants.NettyConstants;
 import com.dream.netty.common.domain.CommandHeader;
+import com.dream.netty.common.domain.INettyRequest;
 import com.dream.netty.common.domain.JsonNettyRequest;
 import com.dream.netty.common.utils.EncryptUtils;
 import com.dream.netty.common.utils.JsonUtils;
@@ -38,23 +40,32 @@ public class NettyClient {
 			EventLoopGroup group = new NioEventLoopGroup();
 			Bootstrap b = new Bootstrap();
 			b.group(group).channel(NioSocketChannel.class);
-			b.handler((ClientChannelInitializer) factory.getBean("clientChannelInitializer", ClientChannelInitializer.class));
+			b.handler(new ClientChannelInitializer());
 			ChannelFuture future = b.connect(new InetSocketAddress(host, port));
 			Channel c = future.channel();
-			CommandHeader header = new CommandHeader();
-			header.setId(UUID.randomUUID().getMostSignificantBits());
-			header.setMapping("nameInfo");
-			header.setTime(System.currentTimeMillis());
-			JsonNettyRequest request = new JsonNettyRequest();
-			request.setCommandHeader(header);
-			NameInfoRequest a = new NameInfoRequest();
-			a.setName("莫邦伟");
-			String data=EncryptUtils.encrypt(a, NettyConstants.ENCRIPT_KEY);
-			request.setData(data);
-			c.writeAndFlush(JsonUtils.toStr(request)).sync();
-
+			sendMsg(c, "nameInfo", 1, getNameInfoRequest("莫邦伟"));
+			sendMsg(c, "nameInfo", 0, getNameInfoRequest("李博"));
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}
+	}
+
+	private static void sendMsg(Channel c, String mapping, Integer commandType, INettyRequest request) throws Exception {
+		CommandHeader header = new CommandHeader();
+		header.setId(UUID.randomUUID().getMostSignificantBits());
+		header.setMapping(mapping);
+		header.setTime(System.currentTimeMillis());
+		header.setCommandType(commandType);
+		request.setCommandHeader(header);
+		request.setData(EncryptUtils.encrypt((Serializable) request.getData(), NettyConstants.ENCRIPT_KEY));
+		c.writeAndFlush(JsonUtils.toStr(request)).sync();
+	}
+
+	private static INettyRequest getNameInfoRequest(String name) {
+		JsonNettyRequest request = new JsonNettyRequest();
+		NameInfoRequest a = new NameInfoRequest();
+		a.setName(name);
+		request.setData(a);
+		return request;
 	}
 }

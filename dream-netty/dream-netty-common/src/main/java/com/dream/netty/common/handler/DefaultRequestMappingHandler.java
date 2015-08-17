@@ -1,7 +1,5 @@
 package com.dream.netty.common.handler;
 
-import java.util.Map;
-
 import org.springframework.stereotype.Component;
 
 import com.dream.netty.common.utils.SpringLocator;
@@ -15,11 +13,9 @@ import com.dream.netty.common.utils.SpringLocator;
 @SuppressWarnings("rawtypes")
 public class DefaultRequestMappingHandler implements IRequestMappingHandler {
 
-	private static Map<String, INettyHandler> handlers = SpringLocator.getApplicationContext().getBeansOfType(INettyHandler.class);
-
 	@Override
 	public INettyHandler getHandler(String commandKey) {
-		return handlers.get(commandKey);
+		return (INettyHandler) SpringLocator.getApplicationContext().getBean(commandKey, INettyHandler.class);
 	}
 
 }

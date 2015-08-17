@@ -8,11 +8,17 @@ import java.lang.annotation.Target;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * 此注解表示了一个请求映射到的action
+ * 
+ * @author mobangwei
+ *
+ */
 @Component
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface HandlerMapping {
+public @interface NettyAction {
 
 	String value() default "";
 }

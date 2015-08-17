@@ -1,4 +1,4 @@
-package com.dream.netty.common.domain;
+package com.dream.netty.common.handler.dispatcher;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;

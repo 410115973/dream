@@ -3,7 +3,6 @@ package com.dream.netty.common.domain;
 import io.netty.channel.Channel;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -13,10 +12,11 @@ import com.dream.netty.common.utils.JsonUtils;
 
 /**
  * json的Request
+ * 
  * @author mobangwei
  *
  */
-public class JsonNettyRequest implements INettyRequest, Serializable {
+public class JsonNettyRequest implements INettyRequest {
 	/**
 	 * 
 	 */
@@ -65,6 +65,7 @@ public class JsonNettyRequest implements INettyRequest, Serializable {
 		this.channel = channel;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends INettyData> T dataConverter(Class<T> targetClass) {
 		try {

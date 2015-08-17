@@ -15,11 +15,11 @@ import com.dream.netty.common.domain.NettyResponse;
  */
 @Sharable
 public class JsonNettyEncoder extends MessageToMessageEncoder<NettyResponse> {
-	private INettyMessageHandler nettyMessageHandler = new JsonNettyMessageHandler();
+	private JsonNettyMessageHandler nettyMessageHandler = new JsonNettyMessageHandler();
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, NettyResponse msg, List<Object> out) throws Exception {
-		Object handlerMsg = nettyMessageHandler.handlerToMsg(msg);
+		String handlerMsg = (String) nettyMessageHandler.handlerToMsg(msg);
 		out.add(handlerMsg);
 	}
 }

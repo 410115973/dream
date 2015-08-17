@@ -9,18 +9,20 @@ import org.springframework.stereotype.Component;
 import com.dream.netty.common.constants.NettyConstants;
 import com.dream.netty.common.domain.INettyRequest;
 import com.dream.netty.common.domain.INettyResponse;
+import com.dream.netty.common.domain.JsonNettyRequest;
+import com.dream.netty.common.domain.NettyResponse;
 import com.dream.netty.common.utils.EncryptUtils;
 import com.dream.netty.common.utils.JsonUtils;
 
 @Component
-public class JsonNettyMessageHandler implements INettyMessageHandler {
+public class JsonNettyMessageHandler implements INettyMessageHandler<String, String> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(JsonNettyMessageHandler.class);
 
 	@Override
-	public <T> T handlerForMsg(Object msg, Class<T> targetClass) {
+	public INettyRequest handlerForMsg(String msg) {
 		if (msg instanceof String) {
 			try {
-				T targetObject = JsonUtils.fromStr((String) msg, targetClass);
+				JsonNettyRequest targetObject = JsonUtils.fromStr((String) msg, JsonNettyRequest.class);
 				if (targetObject instanceof INettyRequest) {
 					INettyRequest request = (INettyRequest) targetObject;
 					Object data = request.getData();
@@ -36,18 +38,16 @@ public class JsonNettyMessageHandler implements INettyMessageHandler {
 	}
 
 	@Override
-	public <T> Object handlerToMsg(T sourceObject) {
+	public String handlerToMsg(INettyResponse sourceObject) {
 		try {
-			if (sourceObject instanceof INettyResponse) {
-				INettyResponse response = (INettyResponse) sourceObject;
-				String data = EncryptUtils.encrypt((Serializable) response.getData(), NettyConstants.ENCRIPT_KEY);
-				response.setData(data);
-			}
-			return JsonUtils.toStr(sourceObject);
+			INettyResponse response = new NettyResponse();
+			response.setCommandHeader(sourceObject.getCommandHeader());
+			String data = EncryptUtils.encrypt((Serializable) sourceObject.getData(), NettyConstants.ENCRIPT_KEY);
+			response.setData(data);
+			return JsonUtils.toStr(response);
 		} catch (Exception e) {
 			LOGGER.warn(e.getMessage(), e);
 		}
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

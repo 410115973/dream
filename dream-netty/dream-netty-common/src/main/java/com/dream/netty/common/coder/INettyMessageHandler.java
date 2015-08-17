@@ -1,5 +1,7 @@
 package com.dream.netty.common.coder;
 
+import com.dream.netty.common.domain.INettyRequest;
+import com.dream.netty.common.domain.INettyResponse;
 
 /**
  * 将获取的消息转化成我们需要的nettyRequest
@@ -7,9 +9,9 @@ package com.dream.netty.common.coder;
  * @author mobangwei
  *
  */
-public interface INettyMessageHandler {
+public interface INettyMessageHandler<S, T> {
 
-	<T> T handlerForMsg(Object msg, Class<T> targetClass);
+	INettyRequest handlerForMsg(S msg);
 
-	<T> Object handlerToMsg(T sourceObject);
+	T handlerToMsg(INettyResponse sourceObject);
 }

@@ -1,6 +1,8 @@
-package com.dream.netty.common.domain;
+package com.dream.netty.common.handler.dispatcher;
 
 import java.util.Queue;
+
+import com.dream.netty.common.domain.INettyRequest;
 
 public final class MessageQueue {
 

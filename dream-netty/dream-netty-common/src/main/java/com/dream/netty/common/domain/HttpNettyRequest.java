@@ -5,7 +5,6 @@ import io.netty.channel.Channel;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.dream.netty.common.utils.ReflectionUtil;
 
-public class HttpNettyRequest implements INettyRequest, Serializable {
+public class HttpNettyRequest implements INettyRequest {
 
 	/**
 	 * 

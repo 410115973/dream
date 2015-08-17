@@ -21,11 +21,9 @@
 	<context:component-scan base-package="com.dream.*" />
 	<context:annotation-config />
 
-	<bean id="udpInBoundServerHandler" class="com.dream.netty.common.channel.ChannelInboundHandler" init-method="init">
-	</bean>
-	<bean id="handlerDispatcher" class="com.dream.netty.common.handler.HandlerDispatcher" init-method="init" destroy-method="stop">
+	<bean id="handlerDispatcher" class="com.dream.netty.common.handler.dispatcher.HandlerDispatcher" init-method="init" destroy-method="stop">
 		<property name="messageExecutor">
-			<bean class="com.dream.netty.common.domain.FiexThreadPoolExecutor" destroy-method="shutdown">
+			<bean class="com.dream.netty.common.handler.dispatcher.FiexThreadPoolExecutor" destroy-method="shutdown">
 				<constructor-arg value="${app.dispatcher.pool.corePoolSize}" />
 				<constructor-arg value="${app.dispatcher.pool.maximumPoolSize}" />
 				<constructor-arg value="${app.dispatcher.pool.keepAliveSecond}" />

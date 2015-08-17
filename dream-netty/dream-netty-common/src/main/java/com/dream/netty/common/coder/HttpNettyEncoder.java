@@ -7,8 +7,8 @@ import java.util.List;
 
 import com.dream.netty.common.domain.NettyResponse;
 
-public class HttpNettyEncoder  extends MessageToMessageEncoder<NettyResponse> {
-	private INettyMessageHandler nettyMessageHandler = new HttpNettyMessageHandler();
+public class HttpNettyEncoder extends MessageToMessageEncoder<NettyResponse> {
+	private HttpNettyMessageHandler nettyMessageHandler = new HttpNettyMessageHandler();
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, NettyResponse msg, List<Object> out) throws Exception {

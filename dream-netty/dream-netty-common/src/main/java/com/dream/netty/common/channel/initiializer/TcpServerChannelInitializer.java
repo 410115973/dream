@@ -1,4 +1,4 @@
-package com.dream.netty.common.channel;
+package com.dream.netty.common.channel.initiializer;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -8,6 +8,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 
+import com.dream.netty.common.channel.ChannelInboundHandler;
 import com.dream.netty.common.coder.JsonNettyDecoder;
 import com.dream.netty.common.coder.JsonNettyEncoder;
 import com.dream.netty.common.coder.PluginLengthFieldBasedFrameDecoder;

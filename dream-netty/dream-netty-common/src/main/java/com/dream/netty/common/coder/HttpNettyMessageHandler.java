@@ -4,6 +4,7 @@ import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
 import java.util.List;
@@ -13,13 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dream.netty.common.domain.CommandHeader;
+import com.dream.netty.common.domain.HttpNettyRequest;
 import com.dream.netty.common.domain.INettyRequest;
+import com.dream.netty.common.domain.INettyResponse;
 
-public class HttpNettyMessageHandler implements INettyMessageHandler {
+public class HttpNettyMessageHandler implements INettyMessageHandler<HttpRequest, HttpResponse> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HttpNettyMessageHandler.class);
 
 	@Override
-	public <T> T handlerForMsg(Object msg, Class<T> targetClass) {
+	public INettyRequest handlerForMsg(HttpRequest msg) {
 		try {
 			HttpRequest request = (HttpRequest) msg;
 			String url = request.getUri();
@@ -27,7 +30,7 @@ public class HttpNettyMessageHandler implements INettyMessageHandler {
 			if (method.equals(HttpMethod.PUT)) {
 				QueryStringDecoder decoder = new QueryStringDecoder(request.getUri());
 				Map<String, List<String>> params = decoder.parameters();
-				T targetObject = targetClass.newInstance();
+				INettyRequest targetObject = new HttpNettyRequest();
 				if (targetObject instanceof INettyRequest) {
 					INettyRequest nettyRequest = (INettyRequest) targetObject;
 					CommandHeader header = new CommandHeader();
@@ -39,7 +42,7 @@ public class HttpNettyMessageHandler implements INettyMessageHandler {
 					nettyRequest.setCommandHeader(header);
 					nettyRequest.setData(params);
 					nettyRequest.setData(decoder);
-					return (T) nettyRequest;
+					return targetObject;
 				}
 			} else {
 				if (method.equals(HttpMethod.POST)) {
@@ -54,7 +57,7 @@ public class HttpNettyMessageHandler implements INettyMessageHandler {
 	}
 
 	@Override
-	public <T> Object handlerToMsg(T sourceObject) {
+	public HttpResponse handlerToMsg(INettyResponse sourceObject) {
 		// TODO Auto-generated method stub
 		return null;
 	}
