@@ -6,6 +6,6 @@ package com.dream.netty.common.protocol.enums;
  * @author mobangwei
  *
  */
-public enum NettyProtocolType {
-	http, websocket, udp, tcp;
+public enum TransmissionProtocol {
+	TCP, UDP, WEB_SOCKET, HTTP, CUSTOMER;
 }

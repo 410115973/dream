@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- <parent> <groupId>dream-basic</groupId> <artifactId>dream-basic</artifactId> <version>0.0.1-SNAPSHOT</version> </parent> -->
+	<parent>
+		<groupId>dream-basic</groupId>
+		<artifactId>dream-basic</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>dream-weixin-game</groupId>
+	<artifactId>dream-weixin-game</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>dream-weixin-game</name>
+	<modules>
+		<module>dream-weixin-game-web</module>
+	</modules>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>dream-common-server</groupId>
+				<artifactId>dream-common-server</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

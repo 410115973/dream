@@ -56,6 +56,13 @@ public class ChannelGroupHolder {
 	}
 
 	public static void disRegisterChannelGroup(String groupName) {
+		channelGroupHolder.get(groupName).close();
 		channelGroupHolder.remove(groupName);
+	}
+
+	public static void disRegisterChannelGroup() {
+		for (String groupName : channelGroupHolder.keySet()) {
+			disRegisterChannelGroup(groupName);
+		}
 	}
 }
